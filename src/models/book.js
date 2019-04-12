@@ -21,7 +21,15 @@ const SchemaBook = new Schema({
         type: Number
     },
     image: {
-        type: Buffer
+        type: String
+    },
+    rating: {
+        type: Number,
+        default: 0
+    },
+    numVotes: {
+        type: Number,
+        default: 0
     }
 });
 
