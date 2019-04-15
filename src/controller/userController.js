@@ -3,8 +3,12 @@ const Users = mongoose.model('Users');
 const auth = require('../services/auth');
 
 const getUser = async(req, res) => {
-    const user = await Users.findOne({_id: req.params.id});
-    return res.json(user);
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
+        const user = await Users.findOne({_id: req.params.id});
+        return res.json(user);
+    } else {
+        return res.status(404).send();
+    }
 }
 
 const post = async(req, res) => { // signup

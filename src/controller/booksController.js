@@ -31,8 +31,12 @@ const getBooks = async(req, res) => {
 }
 
 const getBook = async(req, res) => {
-    const books = await Book.findOne({_id: req.params.id});
-    return res.json(books);
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
+        const books = await Book.findOne({_id: req.params.id});
+        return res.json(books);
+    } else {
+        return res.status(400).send();
+    }
 }
 
 const update = async(req, res) => {
