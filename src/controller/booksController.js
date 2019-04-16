@@ -18,7 +18,6 @@ const destroy = async(req, res) => {
                 else
                     return res.send();
             });
-        return res.send();
     }
     else{
         return res.status(400).send();

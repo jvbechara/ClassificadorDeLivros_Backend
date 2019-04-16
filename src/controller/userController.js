@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Users = mongoose.model('Users');
 const auth = require('../services/auth');
+const md5 = require('md5');
 
 const getUser = async(req, res) => {
     if(mongoose.Types.ObjectId.isValid(req.params.id)){
@@ -12,7 +13,11 @@ const getUser = async(req, res) => {
 }
 
 const post = async(req, res) => { // signup
-    await Users.create(req.body, function(err, cliente){
+    await Users.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: md5(req.body.password + global.SALT_KEY)
+    }, function(err, cliente){
         if(err)
             return res.status(400).send();
         else
@@ -31,13 +36,10 @@ const authenticate = async(req, res) => { // signin
             return
         }
         
-        console.log(user._id);
-
         const token = await auth.generateToken({
             id: user._id,
             email: user.email,
-            password: user.password,
-            roles: user.roles
+            password: user.password
         });
 
         res.status(201).send({
